@@ -231,6 +231,13 @@ prop@readonly = "not anotherProp@valid"
 prop@required = "$customer.age >= 21"
 ```
 
+## Building and Testing
+
+```
+npm run build
+npm test
+```
+
 ## License
 
 The MIT License (MIT)  
