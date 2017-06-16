@@ -1,0 +1,36 @@
+{
+  "name": "metaweb-script",
+  "version": "1.0.0",
+  "description": "META Script implementation.",
+  "main": "dist/index.js",
+  "typings": "dist/index",
+  "scripts": {
+    "test": "mocha -r ts-node/register __tests__/* __tests__/**/*",
+    "test-one": "mocha -r ts-node/register __tests__/* __tests__/**/* --grep $1",
+    "build": "tsc",
+    "doc": "typedoc --out ./docs --mode file ./src",
+    "prepublish": "npm run build; npm run doc",
+    "sandbox": "npm run build; node ./dist/sandbox/index.js"
+  },
+  "keywords": [
+    "metaweb",
+    "meta web",
+    "metaapi",
+    "meta api",
+    "model",
+    "data model"
+  ],
+  "author": "Jiri Hybek <jiri@hybek.cz>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chai": "^4.0.0",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.18",
+    "chai": "^4.0.1",
+    "mocha": "^3.4.2",
+    "ts-node": "^3.0.4",
+    "typedoc": "^0.7.1",
+    "typescript": "^2.1.6"
+  }
+}
