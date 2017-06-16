@@ -1,5 +1,7 @@
 # metaweb-script
 
+![build status](http://jenkins.cloud.cryonix.cz/buildStatus/icon?job=metaweb-script)
+
 The JavaScript implementation for the META Script of the META Web project.
 
 Transpiles the META Script into a native JavaScript code. Ready for metaweb-model package.
