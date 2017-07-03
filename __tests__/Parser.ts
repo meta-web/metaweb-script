@@ -84,7 +84,7 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("@attr", "id", false)
 			).to.deep.include({
-				bindings: ["#scope"],
+				bindings: ["#scope", "@attr"],
 				name: "vid",
 				placeholders: { scope: true }
 			});
@@ -96,7 +96,7 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("@attr.sub", "id", false)
 			).to.deep.include({
-				bindings: ["#scope"],
+				bindings: ["#scope", "@attr", "sub"],
 				name: "vid",
 				placeholders: { scope: true }
 			});
@@ -108,7 +108,7 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName@attr", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "varName"],
+				bindings: ["#scope", "varName", "@attr"],
 				name: "vid",
 				placeholders: { scope: true }
 			});
@@ -120,7 +120,7 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName@attr.sub", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "varName"],
+				bindings: ["#scope", "varName", "@attr", "sub"],
 				name: "vid",
 				placeholders: { scope: true }
 			});
@@ -132,7 +132,7 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName.subName@attr.sub", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "varName", "subName"],
+				bindings: ["#scope", "varName", "subName", "@attr", "sub"],
 				name: "vid",
 				placeholders: { scope: true }
 			});
@@ -185,7 +185,7 @@ describe("Parser", () => {
 			let r = Parse({}, 'if(@singleAttr, $multi.hello, hi) ~ " " ~ IF(#record.truth == 42 OR hello@valid, "the TRUTH", "the DOOM") ~ " with RADIUS " ~ (2 * 3.141 * record["truth"])');
 
 			expect(r.bindings).to.deep.include({
-				'#scope': [ '#scope' ],
+				'#scope,@singleAttr': [ '#scope', '@singleAttr' ],
 				'multi,hello': [ 'multi', 'hello' ],
 				'#scope,hi': [ '#scope', 'hi' ],
 				'#record,truth': [ '#record', 'truth' ],

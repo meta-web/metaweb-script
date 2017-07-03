@@ -46,6 +46,9 @@ export interface IScript {
 
 	/** Transpiled javascript code for debugging **/
 	js: string;
+
+	/** ID of script origin - for debugging purpose, can be a filename */
+	origin?: string;
 }
 
 /**

@@ -70,6 +70,8 @@ export function ParseVariable(exp: string, id: string, propertyPointer: boolean 
 		for(let i = 0; i < attrParts.length; i++) attrPath.push('"' + attrParts[i] + '"');
 
 		varSrc = 'var v' + id + '=m.attr(h.np([' + pathStr + ']),[' + attrPath.join(",") + ']);';
+		path.push("@" + attrParts[0]);
+		path = path.concat( attrParts.slice(1) );
 
 	} else {
 
