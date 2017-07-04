@@ -51,7 +51,7 @@ describe("Compiler", () => {
 	it("#compileScript", () => {
 
 		let compiler = new Compiler();
-		let script = compiler.compileScript('uppercase( if(@singleAttr, $multi.hello, hi) ) ~ " " ~ IF(#record.truth == 42 OR hello@valid, "the TRUTH", "the DOOM") ~ lowercase(" with RADIUS ") ~ (2 * 3.141 * pow(record["truth"], 2))');
+		let script = compiler.compileScript('uppercase( if($singleAttr, #multi.hello, hi) ) ~ " " ~ IF(@record.truth == 42 OR hello$valid, "the TRUTH", "the DOOM") ~ lowercase(" with RADIUS ") ~ (2 * 3.141 * pow(record["truth"], 2))');
 
 		expect(script.bindings).to.be.instanceof(Array);
 		expect(script.source).to.exist;
@@ -66,7 +66,7 @@ describe("Compiler", () => {
 		let script = compiler.compileInterpolation('Helllo #{name}!');
 
 		expect(script.bindings).to.deep.equal(
-			[ [ "#scope", "name" ] ]
+			[ "{scope}.name" ]
 		);
 
 		expect(script.source).to.exist;
@@ -81,7 +81,7 @@ describe("Compiler", () => {
 		let script = compiler.compilePropertyRef('varName.subName');
 
 		expect(script.bindings).to.deep.equal(
-			[ [ "#scope", "varName", "subName" ] ]
+			[ "{scope}.varName.subName" ]
 		);
 
 		expect(script.source).to.exist;
@@ -99,7 +99,7 @@ describe("Compiler", () => {
 		expect(
 			res
 		).to.deep.include({
-			bindings: ["#scope", "varName", "subName"],
+			bindings: [ "{scope}.varName.subName" ],
 			name: "vid",
 			placeholders: { "scope": true },
 		});

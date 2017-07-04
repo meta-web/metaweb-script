@@ -8,104 +8,111 @@
  * @license MIT
  */
 
-export class ModelMockup {
+/**
+ * Node config interface
+ */
+export interface IMockupNodeConfig {
+	"_"?: any;
+	[ K: string ]: IMockupNodeConfig|boolean|number|string;
+	[ K: number ]: IMockupNodeConfig|boolean|number|string;
+}
 
-	protected data: any = {};
+/**
+ * Node instance interface
+ */
+export interface IMockupNode {
+	(): any;
+	__value: any;
+	__children: { [K: string]: IMockupNode };
+	[ K: string ]: any;
+	[ K: number ]: any;
+}
 
-	public constructor(data: any){
-		
-		this.data = data;
+/**
+ * Node proxy
+ */
+const NodeProxy : ProxyHandler<IMockupNode> = {
 
-	}
+	/**
+	 * Getter
+	 */
+	get: function(target: IMockupNode, prop: string) {
+			
+		return target.__children[prop];
 
-	public getValue(state: any, path: Array<string> = []){
+	},
 
-		if(!(state instanceof Object))
-			return state;
+	/**
+	 * Node call overload
+	 */
+	apply: function(target: IMockupNode, that: any, args: any) {
 
-		if(path.length > 0){
-
-			let k = path.shift();
-
-			if(state._ && state._[k])
-				return this.getValue(state._[k], path);
-			else
-				return null;
+		if(target.__value){
+			
+			return target.__value;
 
 		} else {
 
-			if(state._){
+			let value = {};
 
-				let r = {};
-
-				for(let k in state._)
-					r[k] = this.getValue(state._[k]);
-
-				return r;
-
-			} else {
-				
-				return state['$'] || null;
-
+			for(let i in target.__children){
+				if(typeof i == 'string' && i.substr(0, 1) == '$') continue;
+				value[i] = target.__children[i]();
 			}
+
+			return value;
 
 		}
 
 	}
 
-	public get(path: Array<string> = []){
+};
 
-		return this.getValue(this.data, path);
+/**
+ * Mockup model class
+ */
+export class ModelMockup {
+
+	/**
+	 * Root node
+	 */
+	public root;
+
+	/**
+	 * Constructor
+	 *
+	 * @param rootNode Root node configuration
+	 */
+	public constructor(rootNode: IMockupNodeConfig){
+		
+		this.root = this.createNode(rootNode);
 
 	}
 
-	public getAttr(state: any, propPath: Array<string> = [], attrPath: Array<string>){
+	/**
+	 * Creates new proxied node
+	 *
+	 * @param config Node config
+	 */
+	protected createNode(config: IMockupNodeConfig){
 
-		if(propPath.length > 0){
+		let node: IMockupNode = Object.assign(function(){}, {
+			__children: {},
+			__value: (config._ ? config._ : null)
+		});
 
-			let k = propPath.shift();
+		for(let i in config){
 
-			if(state._ && state._[k])
-				return this.getAttr(state._[k], propPath, attrPath);
+			if(i == "_") continue;
+
+			if(config[i] instanceof Object)
+				node.__children[i] = this.createNode(<IMockupNodeConfig>config[i]);
 			else
-				return null;
+				node.__children[i] = this.createNode({ _: config[i] });
 
-		} else {
+		}
 
-			let attrKey = attrPath.shift();
-
-			if(state['@' + attrKey] !== undefined)
-				return this.getValue(state['@' + attrKey], attrPath);
-			else
-				return null;
-
-		}		
-
-	}
-
-	public attr(propPath: Array<string> = [], attrPath: Array<string>){
-
-		return this.getAttr(this.data, propPath, attrPath);
-
-	}
-
-	public isValid(path: Array<string>){
-
-		return this.attr(path, ['valid']);
-
-	}
-
-	public isReady(path: Array<string>){
-
-		return this.attr(path, ['ready']);
-
-	}
-
-	public ref(path: Array<string>){
-
-		return {
-			path: path
-		};
+		return new Proxy(node, NodeProxy);
 
 	}
 

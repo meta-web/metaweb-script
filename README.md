@@ -6,44 +6,47 @@ The JavaScript implementation for the META Script of the META Web project.
 
 Transpiles the META Script into a native JavaScript code. Ready for metaweb-model package.
 
+Check out the [META Script Playground](http://play.metahub.cloud/meta-script/) to try it out.
+
+**NOTE:** This library requires support of the ECMAScript 2015 (ES6) standard.
+
 ## Usage
 
 ```javascript
 var Compiler = require("metaweb-script").Compiler;
-var Model = require("metaweb-model").Model;
+var Model = require("metaweb-script").ModelMockup;
 
-var helpers = require("metaweb-script").Helpers;
-var placeholders = {};
+var placeholders = { "scope": model.root };
 
 var compiler = new Compiler();
-var model = new Model(_); //or null if not using model references
+var model = new ModelMockup({ "name": "world" }); //or null if not using model references
 
 //Compile script
 var script1 = compiler.parseScript("1+1");
 
 //Execute
-var res1 = script1.executor.call(null, model, placeholders, helpers);
+var res1 = script1.executor.call(null, model.root, placeholders);
 
 //Compile string interpolation
-var script2 = compiler.compileInterpolation("Hello #{world}!");
+var script2 = compiler.compileInterpolation("Hello #{name}!");
 
 //Execute
-var res2 = var res1 = script1.executor.call(null, model, placeholders, helpers);
+var res2 = var res1 = script1.executor.call(null, model.root, placeholders);
 
 //Compile property reference
-var script3 = compiler.compilePropertyRef("hello.world");
+var script3 = compiler.compilePropertyRef("name");
 
 //Execute
-var res3 = script1.executor.call(null, model, placeholders, helpers);
+var res3 = script1.executor.call(null, model.root, placeholders);
 
 //Register custom function
 compiler.registerFunction('hello', {
-	renderer: function(name, args){ return '"Hello ' + args.join(", ") + '"' ; },
-	minArgs: 1,
-	maxArgs: 2
+    renderer: function(name, args){ return '"Hello ' + args.join(", ") + '"' ; },
+    minArgs: 1,
+    maxArgs: 2
 });
 
-compiler.parseScript("hello('John', 'Jack')"); //return "Hello John, Jack";
+compiler.compileScript("hello('John', 'Jack')"); //return "Hello John, Jack";
 ```
 
 ### TypeScript
@@ -65,10 +68,10 @@ When a script is transpiled then following interface is returned as a result:
 
 ```javascript
 var res = {
-	source: string, //Original source code
-	executor: Function, //Transpiled function instance
-	bindings: Array, //Array of references property paths, used for model change binding
-	js: string //Transpiled JavaScript code from which executor function is created
+    source: string, //Original source code
+    executor: Function, //Transpiled function instance
+    bindings: Array, //Array of references property paths, used for model change binding
+    js: string //Transpiled JavaScript code from which executor function is created
 };
 ```
 
@@ -100,22 +103,23 @@ META Script always references META Model properties and optionally it's attribut
 
 Property is written using following notation:
 
-`[$#]<name>[.<sub_name>[@<attribute>.<sub_attribute>]][value_property]`
+`[@#]<name>[.<sub_name>[$<attribute>.<sub_attribute>]][value_property]`
 
-- Variable or attribute name can contain only english letters, numbers and underscores
+- Variable or attribute name can contain only English letters, numbers and underscores
 - Variable or attribute name must NOT start with a number
-- `$` sign references property path from a model root
-- `#` sign references a property placeholder
-- `.` references sub property or sub attribute in a model tree
-- `@` sign references a property attribute
+- Variable or attribute name cannot start with '__' - reserved for internal model properties
+- `#` sign references property path from a model root
+- `@` sign references a property placeholder
+- `.` references sub property or sub-attribute in a model tree
+- `$` sign references a property attribute
 
-Each property or an attribute returns a value. If value is an object we can access it's properties using square bracket notation:
+Each property or an attribute returns a value. If the value is an object we can access its properties using square bracket notation:
 
 `my.prop['personal']['first_name']`
 
 or with an attribute:
 
-`my.prop@options[0]`
+`my.prop$options[0]`
 
 Some examples:
 
@@ -124,17 +128,17 @@ Some examples:
 firstName
 
 /* Root property */
-$customer.firstName */
+#customer.firstName */
 
 /* Placeholder property */
-#record.firstName
+@record.firstName
 
 /* Access to an attribute */
-firstName@valid
-firstName@required
+firstName$valid
+firstName$required
 
 /* Access to a value property */
-$user.role@items[0]['label']
+#user.role$items[0]['label']
 ```
 
 ### Operators
@@ -146,7 +150,7 @@ $user.role@items[0]['label']
 
 ### String Interpolation
 
-We can use `#{variable}` notation to easily insert variables into strings:
+We can use `#{expression}` notation to easily insert expressions or variables into strings:
 
 ```
 'Hello #{name}'
@@ -154,13 +158,13 @@ We can use `#{variable}` notation to easily insert variables into strings:
 
 ### Functions
 
-Functions are type of operand which always return a value and accept arguments.
+Functions are a type of the operand which always return a value and accept arguments.
 
 Function is written as:
 
 `<function_name>(<arguments>)`
 
-- Function name can contains only english letters, numbers and underscores
+- Function name can contain only English letters, numbers and underscores
 - Function name must NOT start with a number
 - Function name must be always followed with round brackets
 - Function arguments are separated using `,`
@@ -210,13 +214,15 @@ Following examples represent various META Model use-cases. META Script expressio
 
 ```plain
 /* Condition - field is required only if sameAsInvoice is not true */
-#record.delivery.address@required = "!#record.delivery.sameAsInvoice"
-#record.delivery.address@required = "NOT #record.delivery.sameAsInvoice"
-#record.delivery.address@required = "if(#record.delivery.sameAsInvoice, false, true)"
+@record.delivery.address$required = "!@record.delivery.sameAsInvoice"
+@record.delivery.address$required = "NOT @record.delivery.sameAsInvoice"
+@record.delivery.address$required = "if(@record.delivery.sameAsInvoice, false, true)"
 
 /* Strings - fullName consists of firstName and lastName properties delimeted by a space string */
-fullName = "'#{firstName} #{lastName}'"
 fullName = "firstName ~ ' ' ~ lastName"
+
+/* Or with interpolation parser */
+fullName = "#{firstName} #{lastName}"
 
 /* Arithmetics */
 totalPrice = "(pricePerHour * 24) * days"
@@ -224,13 +230,13 @@ y = "x * 1.5 + a"
 c = "sqrt( pow(a, 2) + pow(b, 2) )"
 
 /* Enable if another field is not empty */
-prop@readonly = "empty(name)"
+prop$readonly = "empty(name)"
 
 /* Enable if another field is valid */
-prop@readonly = "not anotherProp@valid"
+prop$readonly = "not anotherProp$valid"
 
 /* Required if age is grater or equal than 21 */
-prop@required = "$customer.age >= 21"
+prop$required = "#customer.age >= 21"
 ```
 
 ## Building and Testing

@@ -19,12 +19,12 @@ import {InvalidVariableError} from './Errors';
  *
  * @param bindings Bindings hashmap
  */
-export function normalizeBindings(bindings: { [K: string]: Array<string> }){
+export function normalizeBindings(bindings: { [K: string]: number }){
 
 	let res = [];
 
 	for(let i in bindings)
-		res.push(bindings[i]);
+		res.push(i);
 
 	return res;
 
@@ -124,7 +124,7 @@ export class Compiler {
 
 		return {
 			source: source,
-			executor: new Function("m,p,h", parsed.source),
+			executor: new Function("r,p", parsed.source),
 			bindings: normalizeBindings(parsed.bindings),
 			js: parsed.source
 		}
@@ -142,7 +142,7 @@ export class Compiler {
 		
 		return {
 			source: source,
-			executor: new Function("m,p,h", parsed.source),
+			executor: new Function("r,p", parsed.source),
 			bindings: normalizeBindings(parsed.bindings),
 			js: parsed.source
 		}
@@ -160,7 +160,7 @@ export class Compiler {
 
 		return {
 			source: source,
-			executor: new Function("m,p,h", parsed.source),
+			executor: new Function("r,p", parsed.source),
 			bindings: normalizeBindings(parsed.bindings),
 			js: parsed.source
 		}
@@ -175,12 +175,16 @@ export class Compiler {
 	 */
 	public parseVariable(exp: string, id: string){
 
-		let check = new RegExp("(\\$|#)?([a-zA-Z_]+([a-zA-Z0-9_]+)?(\\.[a-zA-Z_]+([a-zA-Z0-9_]+)?)*(@[a-zA-Z_]([a-zA-Z0-9_]+)?)?|(@[a-zA-Z_]([a-zA-Z0-9_]+)?))");
+		let check = new RegExp("(#)?((@)?[a-zA-Z_]+([a-zA-Z0-9_]+)?(\\.[a-zA-Z_]+([a-zA-Z0-9_]+)?)*(\\@[a-zA-Z_]([a-zA-Z0-9_]+)?)?|(\\$[a-zA-Z_]([a-zA-Z0-9_]+)?))");
 
 		if(!check.test(exp))
 			throw new InvalidVariableError(exp);
 
-		return ParseVariable(exp, id);
+		let parsed = ParseVariable(exp, id);
+
+		parsed.bindings = [ parsed.bindings ];
+
+		return parsed;
 
 	}
 

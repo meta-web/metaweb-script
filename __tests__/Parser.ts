@@ -12,7 +12,7 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "varName"],
+				bindings: "{scope}.varName",
 				name: "vid",
 				placeholders: { "scope": true },
 			});
@@ -24,7 +24,7 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName.subName", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "varName", "subName"],
+				bindings: "{scope}.varName.subName",
 				name: "vid",
 				placeholders: { "scope": true }
 			});
@@ -34,9 +34,9 @@ describe("Parser", () => {
 		it('should parse single-level root variable', () => {
 
 			expect(
-				ParseVariable("$varName", "id", false)
+				ParseVariable("#varName", "id", false)
 			).to.deep.include({
-				bindings: ["varName"],
+				bindings: "varName",
 				name: "vid",
 				placeholders: {}
 			});
@@ -46,9 +46,9 @@ describe("Parser", () => {
 		it('should parse multi-level root variable', () => {
 
 			expect(
-				ParseVariable("$varName.subName", "id", false)
+				ParseVariable("#varName.subName", "id", false)
 			).to.deep.include({
-				bindings: ["varName", "subName"],
+				bindings: "varName.subName",
 				name: "vid",
 				placeholders: {}
 			});
@@ -58,9 +58,9 @@ describe("Parser", () => {
 		it('should parse single-level placeholder variable', () => {
 
 			expect(
-				ParseVariable("#varName", "id", false)
+				ParseVariable("@varName", "id", false)
 			).to.deep.include({
-				bindings: ["#varName"],
+				bindings: "{varName}",
 				name: "vid",
 				placeholders: { varName: true }
 			});
@@ -70,33 +70,33 @@ describe("Parser", () => {
 		it('should parse multi-level placeholder variable', () => {
 
 			expect(
-				ParseVariable("#varName.subName", "id", false)
+				ParseVariable("@varName.subName", "id", false)
 			).to.deep.include({
-				bindings: ["#varName", "subName"],
+				bindings: "{varName}.subName",
 				name: "vid",
 				placeholders: { varName: true }
 			});
 
 		});
 
-		it('should parse root-level attribute', () => {
+		it('should parse zero-level attribute', () => {
 
 			expect(
-				ParseVariable("@attr", "id", false)
+				ParseVariable("$attr", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "@attr"],
+				bindings: "{scope}.$attr",
 				name: "vid",
 				placeholders: { scope: true }
 			});
 
 		});
 
-		it('should parse root-level sub-attribute', () => {
+		it('should parse zero-level sub-attribute', () => {
 
 			expect(
-				ParseVariable("@attr.sub", "id", false)
+				ParseVariable("$attr.sub", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "@attr", "sub"],
+				bindings: "{scope}.$attr.sub",
 				name: "vid",
 				placeholders: { scope: true }
 			});
@@ -106,9 +106,9 @@ describe("Parser", () => {
 		it('should parse single-level attribute', () => {
 
 			expect(
-				ParseVariable("varName@attr", "id", false)
+				ParseVariable("varName$attr", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "varName", "@attr"],
+				bindings: "{scope}.varName.$attr",
 				name: "vid",
 				placeholders: { scope: true }
 			});
@@ -118,9 +118,9 @@ describe("Parser", () => {
 		it('should parse single-level sub-attribute', () => {
 
 			expect(
-				ParseVariable("varName@attr.sub", "id", false)
+				ParseVariable("varName$attr.sub", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "varName", "@attr", "sub"],
+				bindings: "{scope}.varName.$attr.sub",
 				name: "vid",
 				placeholders: { scope: true }
 			});
@@ -130,9 +130,21 @@ describe("Parser", () => {
 		it('should parse multi-level sub-attribute', () => {
 
 			expect(
-				ParseVariable("varName.subName@attr.sub", "id", false)
+				ParseVariable("varName.subName$attr.sub", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "varName", "subName", "@attr", "sub"],
+				bindings: "{scope}.varName.subName.$attr.sub",
+				name: "vid",
+				placeholders: { scope: true }
+			});
+
+		});
+
+		it('should parse numerical sub-key', () => {
+
+			expect(
+				ParseVariable("varName.1.name", "id", false)
+			).to.deep.include({
+				bindings: "{scope}.varName.1.name",
 				name: "vid",
 				placeholders: { scope: true }
 			});
@@ -140,26 +152,26 @@ describe("Parser", () => {
 		});
 
 
-		it('should parse @valid attribute', () => {
+		it('should parse numerical sub-attribute', () => {
 
 			expect(
-				ParseVariable("varName@valid", "id", false)
+				ParseVariable("varName$attr.1.name", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "varName"],
+				bindings: "{scope}.varName.$attr.1.name",
 				name: "vid",
 				placeholders: { scope: true }
 			});
 
 		});
 
-		it('should parse @ready attribute', () => {
+		it('should parse root attribute', () => {
 
 			expect(
-				ParseVariable("varName@ready", "id", false)
+				ParseVariable("#$attr", "id", false)
 			).to.deep.include({
-				bindings: ["#scope", "varName"],
+				bindings: "$attr",
 				name: "vid",
-				placeholders: { scope: true }
+				placeholders: {}
 			});
 
 		});
@@ -169,7 +181,7 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName.subName", "id", true)
 			).to.deep.include({
-				bindings: ["#scope", "varName", "subName"],
+				bindings: "{scope}.varName.subName",
 				name: "vid",
 				placeholders: { scope: true }
 			});
@@ -182,15 +194,15 @@ describe("Parser", () => {
 
 		it("should parse complex expression and return proper interface", () => {
 
-			let r = Parse({}, 'if(@singleAttr, $multi.hello, hi) ~ " " ~ IF(#record.truth == 42 OR hello@valid, "the TRUTH", "the DOOM") ~ " with RADIUS " ~ (2 * 3.141 * record["truth"])');
+			let r = Parse({}, 'if($singleAttr, #multi.hello, hi) ~ " " ~ IF(@record.truth == 42 OR hello$valid, "the TRUTH", "the DOOM") ~ " with RADIUS " ~ (2 * 3.141 * record["truth"])');
 
 			expect(r.bindings).to.deep.include({
-				'#scope,@singleAttr': [ '#scope', '@singleAttr' ],
-				'multi,hello': [ 'multi', 'hello' ],
-				'#scope,hi': [ '#scope', 'hi' ],
-				'#record,truth': [ '#record', 'truth' ],
-				'#scope,hello': [ '#scope', 'hello' ],
-				'#scope,record': [ '#scope', 'record' ]
+				"{scope}.$singleAttr": 1,
+				"multi.hello": 1,
+				"{scope}.hi": 1,
+				"{record}.truth": 1,
+				"{scope}.hello.$valid": 1,
+				"{scope}.record": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -206,7 +218,7 @@ describe("Parser", () => {
 			let r = ParseInterpolation({}, 'Hello #{name}!');
 
 			expect(r.bindings).to.deep.include({
-				'#scope,name': [ '#scope', 'name' ]
+				"{scope}.name": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -218,7 +230,7 @@ describe("Parser", () => {
 			let r = ParseInterpolation({}, '#{name}!');
 
 			expect(r.bindings).to.deep.include({
-				'#scope,name': [ '#scope', 'name' ]
+				"{scope}.name": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -230,7 +242,7 @@ describe("Parser", () => {
 			let r = ParseInterpolation({}, 'Hello #{name}');
 
 			expect(r.bindings).to.deep.include({
-				'#scope,name': [ '#scope', 'name' ]
+				"{scope}.name": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -242,8 +254,8 @@ describe("Parser", () => {
 			let r = ParseInterpolation({}, 'Hello #{firstName} #{lastName}!');
 
 			expect(r.bindings).to.deep.include({
-				'#scope,firstName': [ '#scope', 'firstName' ],
-				'#scope,lastName': [ '#scope', 'lastName' ]
+				"{scope}.firstName": 1,
+				"{scope}.lastName": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -252,10 +264,10 @@ describe("Parser", () => {
 
 		it("should parse complex expression", () => {
 
-			let r = ParseInterpolation({}, 'Hello #{10 * if($x > 1, 1, -1)}!');
+			let r = ParseInterpolation({}, 'Hello #{10 * if(#x > 1, 1, -1)}!');
 
 			expect(r.bindings).to.deep.include({
-				'x': [ 'x' ]
+				"x": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -271,7 +283,7 @@ describe("Parser", () => {
 			let r = ParsePropertyRef('varName');
 
 			expect(r.bindings).to.deep.include({
-				_: [ '#scope', 'varName' ]
+				"{scope}.varName": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -283,7 +295,7 @@ describe("Parser", () => {
 			let r = ParsePropertyRef('varName.subName');
 
 			expect(r.bindings).to.deep.include({
-				_: [ '#scope', 'varName', 'subName' ]
+				"{scope}.varName.subName": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -292,10 +304,10 @@ describe("Parser", () => {
 
 		it("should parse single-level root property", () => {
 
-			let r = ParsePropertyRef('$varName');
+			let r = ParsePropertyRef('#varName');
 
 			expect(r.bindings).to.deep.include({
-				_: [ 'varName' ]
+				"varName": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -304,10 +316,10 @@ describe("Parser", () => {
 
 		it("should parse multi-level root property", () => {
 
-			let r = ParsePropertyRef('$varName.subName');
+			let r = ParsePropertyRef('#varName.subName');
 
 			expect(r.bindings).to.deep.include({
-				_: [ 'varName', 'subName' ]
+				"varName.subName": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -316,10 +328,10 @@ describe("Parser", () => {
 
 		it("should parse single-level placeholder property", () => {
 
-			let r = ParsePropertyRef('#varName');
+			let r = ParsePropertyRef('@varName');
 
 			expect(r.bindings).to.deep.include({
-				_: [ '#varName' ]
+				"{varName}": 1
 			});
 
 			expect(r).to.has.property('source');
@@ -328,10 +340,10 @@ describe("Parser", () => {
 
 		it("should parse multi-level placeholder property", () => {
 
-			let r = ParsePropertyRef('#varName.subName');
+			let r = ParsePropertyRef('@varName.subName');
 
 			expect(r.bindings).to.deep.include({
-				_: [ '#varName', 'subName' ]
+				"{varName}.subName": 1
 			});
 
 			expect(r).to.has.property('source');

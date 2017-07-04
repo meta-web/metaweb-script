@@ -10,6 +10,22 @@
 import {ParseError} from './Errors';
 import {IFunctionList} from './Functions';
 
+export function NormalizeVariablePath(path: Array<string>){
+
+	if(path.length === 0) return '';
+
+	let key = '';
+
+	for(let i = 0; i < path.length; i++)
+		if(path[i].match(/^[0-9]+$/))
+			key+= '[' + path[i] + ']';
+		else
+			key+= '.' + path[i];
+
+	return key;
+
+}
+
 /**
  * Parses variable expression
  *
@@ -19,70 +35,62 @@ import {IFunctionList} from './Functions';
  */
 export function ParseVariable(exp: string, id: string, propertyPointer: boolean = false){
 
-	let parts = exp.split("@");
-	let path = ( parts[0] != "" ? parts[0].split(".") : [] );
-
-	let pathArgs = [];
+	let parts = exp.split("$");
+	let path = parts[0].split(".");
+	let root = path.shift();
 	let placeholders = {};
+	let bindings = null;
 
-	if(path.length > 0 && path[0].substr(0, 1) == "$")
-		path[0] = path[0].substr(1);		
-	else if(path.length === 0 || path[0].substr(0, 1) != "#")
-		path.unshift("#scope")
+	let key;
 
-	for(let i = 0; i < path.length; i++){
-		
-		if(path[i].substr(0, 1) == "#"){
+	//Check key path
+	if(root.substr(0, 1) == "#"){
 
-			let phName = path[i].substr(1);
-			pathArgs.push('p["' + phName + '"]');
+		key = "r." + root.substr(1) + NormalizeVariablePath(path);
+		bindings = root.substr(1) + ( path.length > 0 ? "." + path.join(".") : "" );
 
-			placeholders[phName] = true;
+	} else if(root.substr(0, 1) == "@"){
 
-		} else if(path[i] !== "") {
-			
-			pathArgs.push('"' + path[i] + '"');
+		key = "p." + root.substr(1) + NormalizeVariablePath(path);
+		bindings = "{" + root.substr(1) + "}" + ( path.length > 0 ? "." + path.join(".") : "" );
+		placeholders[root.substr(1)] = true;
 
-		}
+	} else if(root == ""){
 
-	}
-
-	let pathStr = pathArgs.join(',');
-
-	let varSrc;
-
-	if(propertyPointer){
-
-		varSrc = 'var v' + id + '=m.ref(h.np([' + pathStr + ']));';
-
-	} else if(parts[1] == "valid"){
-
-		varSrc = 'var v' + id + '=m.isValid(h.np([' + pathStr + ']));';
-
-	} else if(parts[1] == "ready"){
-
-		varSrc = 'var v' + id + '=m.isReady(h.np([' + pathStr + ']));';
-
-	} else if(parts[1]){
-
-		let attrParts = parts[1].split(".");
-		let attrPath = [];
-		for(let i = 0; i < attrParts.length; i++) attrPath.push('"' + attrParts[i] + '"');
-
-		varSrc = 'var v' + id + '=m.attr(h.np([' + pathStr + ']),[' + attrPath.join(",") + ']);';
-		path.push("@" + attrParts[0]);
-		path = path.concat( attrParts.slice(1) );
+		key = "p.scope";
+		bindings = "{scope}";
+		placeholders["scope"] = true;
 
 	} else {
 
-		varSrc = 'var v' + id + '=m.get(h.np([' + pathStr + ']));';
+		key = "p.scope." + root + NormalizeVariablePath(path);
+		bindings = "{scope}." + root + ( path.length > 0 ? "." + path.join(".") : "" );
+		placeholders["scope"] = true;
 
 	}
+
+	//Check attributes
+	if(parts[1] !== undefined){
+
+		let attrPath = parts[1].split(".");
+		let attrRoot = attrPath.shift();
+
+		key+= ( root == "#" ? "" : "." ) + "$" + attrRoot + NormalizeVariablePath(attrPath);
+		bindings+= ( root == "#" ? "" : "." ) + "$" + attrRoot + ( attrPath.length > 0 ? "." + attrPath.join(".") : "" );
+
+	}
+
+	let varSrc;
+
+	if(propertyPointer)
+		varSrc = 'var v' + id + ';try{v' + id +'=' + key + '}catch(e){v' + id + '=null;}';
+	else
+		varSrc = 'var v' + id + ';try{v' + id +'=' + key + '()}catch(e){v' + id + '=null;}';
 
 	return {
 		name: 'v' + id,
 		source: varSrc,
-		bindings: path,
+		bindings: bindings,
 		placeholders: placeholders
 	}
 
@@ -115,7 +123,7 @@ export function Parse(functions: IFunctionList, script: string, returnsString: b
 	let variableMap: { [ K: string ]: string } = {};
 	let variableDefinitions: Array<string> = [];
 	
-	let variableBindings: { [ K: string ]: Array<string> } = {};
+	let variableBindings: { [ K: string ]: number } = {};
 	let placeholders: { [ K: string ]: boolean } = {} ;
 
 	let functionsPatternList = [];
@@ -428,7 +436,7 @@ export function Parse(functions: IFunctionList, script: string, returnsString: b
 		}
 
 		//Variable operand
-		if(eat("(\\$|#)?([a-zA-Z_]+([a-zA-Z0-9_]+)?(\\.[a-zA-Z0-9_]+)*(@[a-zA-Z_]([a-zA-Z0-9_]+)?(\\.[a-zA-Z0-9_]+)*)?|(@[a-zA-Z_]([a-zA-Z0-9_]+)?(\\.[a-zA-Z0-9_]+)*))")){
+		if(eat("(#)?((@)?[a-zA-Z_]+([a-zA-Z0-9_]+)?(\\.[a-zA-Z0-9_]+)*(\\$[a-zA-Z_]([a-zA-Z0-9_]+)?(\\.[a-zA-Z0-9_]+)*)?|(\\$[a-zA-Z_]([a-zA-Z0-9_]+)?(\\.[a-zA-Z0-9_]+)*))")){
 			
 			if(mode >= 2) throwError("Unexpected operand '" + token + "'");
 
@@ -443,10 +451,7 @@ export function Parse(functions: IFunctionList, script: string, returnsString: b
 					variableDefinitions.push(_parsedVar.source);
 					variableMap[token] = _parsedVar.name;
 
-					let _bindingsHash = _parsedVar.bindings.toString();
-
-					if(!variableBindings[_bindingsHash])
-						variableBindings[_bindingsHash] = _parsedVar.bindings;
+					variableBindings[_parsedVar.bindings] = (variableBindings[_parsedVar.bindings] || 0) + 1;
 
 					for(let i in _parsedVar.placeholders)
 						placeholders[i] = true;
@@ -507,7 +512,7 @@ export function Parse(functions: IFunctionList, script: string, returnsString: b
 
 	if(placeholderChecks.length > 0){
 		placeholderChecks.unshift("p=p||{};");
-		placeholderChecks.unshift('pe="Path must be provided for placeholder #";');
+		placeholderChecks.unshift('pe="Placeholder must be set @";');
 	}
 
 	//Final code
@@ -539,7 +544,7 @@ export function Parse(functions: IFunctionList, script: string, returnsString: b
 export function ParseInterpolation(functions: IFunctionList, str: string){
 
 	let matches = str.match(/\#\{[^}]+\}/g);
-	let bindings: { [K: string]: Array<string> } = {};
+	let bindings: { [K: string]: number } = {};
 
 	let matchesMap: { [K: string]: string } = {}; 
 	let varDefinitions: Array<string> = [];
@@ -554,7 +559,7 @@ export function ParseInterpolation(functions: IFunctionList, str: string){
 				let parsed = Parse(functions, exp, true);
 				
 				for(let i in parsed.bindings)
-					bindings[i] = parsed.bindings[i];
+					bindings[i] = (bindings[i] || 0) + parsed.bindings[i];
 
 				let varId = String(varDefinitions.length);
 
@@ -590,7 +595,7 @@ export function ParseInterpolation(functions: IFunctionList, str: string){
  */
 export function ParsePropertyRef(exp: string){
 
-	let check = new RegExp("(\\$|#)?[a-zA-Z_]+([a-zA-Z0-9_]+)?(\\.[a-zA-Z0-9_]+)*(@[a-zA-Z_]([a-zA-Z0-9_]+)?)?");
+	let check = new RegExp("(#)?((@)?[a-zA-Z_]+)([a-zA-Z0-9_]+)?(\\.[a-zA-Z0-9_]+)*(\\$[a-zA-Z_]([a-zA-Z0-9_]+)?)?");
 
 	if(!check.test(exp))
 		throw new Error("Invalid property expression");
@@ -601,14 +606,19 @@ export function ParsePropertyRef(exp: string){
 	let placeholderChecks = [];
 
 	for(let name in _var.placeholders)
-		placeholderChecks.push('if(!placeholders["' + name + '"]) throw new Error("Value for placeholder #' + name + ' must be provided.");');
+		placeholderChecks.push('if(!p["' + name + '"]) throw new Error(pe+"' + name + '");');
 
-	if(placeholderChecks.length > 0)
-		placeholderChecks.unshift("placeholders=placeholders||{};");
+	if(placeholderChecks.length > 0){
+		placeholderChecks.unshift("p=p||{};");
+		placeholderChecks.unshift('pe="Placeholder must be set @";');
+	}
+
+	let bindings = {};
+	bindings[_var.bindings] = 1;
 
 	return {
-		bindings: { "_": _var.bindings },
-		source: _var.source + 'return ' + _var.name + ';'
+		bindings: bindings,
+		source: placeholderChecks.join("") + _var.source + 'return ' + _var.name + ';'
 	};
 
 }

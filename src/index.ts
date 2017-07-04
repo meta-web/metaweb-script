@@ -12,5 +12,4 @@ export * from './Errors';
 export * from './Parser';
 export * from './Compiler';
 export * from './Functions';
-export * from './Helpers';
 export * from './ModelMockup';

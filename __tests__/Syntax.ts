@@ -3,40 +3,36 @@ import { expect } from 'chai';
 
 import {ModelMockup} from '../src/ModelMockup';
 import {IScript, Compiler} from '../src/Compiler';
-import {helpers} from '../src/Helpers';
 
 describe("Syntax", () => {
 
 		let model = new ModelMockup({
-			_: {
-				single: { $: 'value' },
-				multi: {
-					'@valid': false,
-					'@ready': false,
-					'@singleAttr': true,
-					'@nestedAttr': {
-						_: {
-							'test': 'TEST'
-						}
-					},
+			single: { _: 'value' },
+			multi: {
+				'$valid': false,
+				'$ready': false,
+				'$singleAttr': true,
+				'$nestedAttr': {
+					'test': 'TEST',
+					1: "First attr"
+				},
+				hello: { _: 'HELLO' , '$valid': true, '$ready': true },
+				hi: { _: 'HI' },
+				record: {
+					'$attr': 'ATTR',
 					_: {
-						hello: { $: 'HELLO' , '@valid': true, '@ready': true },
-						hi: { $: 'HI' },
-						record: {
-							'@attr': 'ATTR',
-							$: {
-								name: 'John',
-								truth: 42
-							}
-						}
+						name: 'John',
+						truth: 42
 					}
-				}
+				},
+				1: "First",
+				2: "Second"
 			}
 		});
 
 		let exec = (script: IScript) => {
 
-			return script.executor.call(null, model, { 'scope': ['multi'], 'record': ['multi', 'record'] } , helpers);
+			return script.executor.call(null, model.root, { 'scope': model.root.multi, 'record': model.root.multi.record });
 
 		};
 
@@ -378,66 +374,81 @@ describe("Syntax", () => {
 
 			it('Single-level root property value', () => {
 
-				let script = compiler.compileScript('$single');
+				let script = compiler.compileScript('#single');
 				expect( exec(script) ).to.be.equal('value');
 
 			});
 
 			it('Multi-level root property value', () => {
 
-				let script = compiler.compileScript('$multi.hi');
+				let script = compiler.compileScript('#multi.hi');
 				expect( exec(script) ).to.be.equal('HI');
 
 			});
 
 			it('Single-level local attribute value', () => {
 
-				let script = compiler.compileScript('@singleAttr');
+				let script = compiler.compileScript('$singleAttr');
 				expect( exec(script) ).to.be.equal(true);
 
 			});
 
 			it('Single-level root attribute value', () => {
 
-				let script = compiler.compileScript('$multi@singleAttr');
+				let script = compiler.compileScript('#multi$singleAttr');
 				expect( exec(script) ).to.be.equal(true);
 
 			});
 
 			it('Multi-level root attribute value', () => {
 
-				let script = compiler.compileScript('$multi@nestedAttr.test');
+				let script = compiler.compileScript('#multi$nestedAttr.test');
 				expect( exec(script) ).to.be.equal('TEST');
 
 			});
 
 			it('Multi-prop single-level attribute value', () => {
 
-				let script = compiler.compileScript('$multi.hello@valid');
+				let script = compiler.compileScript('#multi.hello$valid');
 				expect( exec(script) ).to.be.equal(true);
 
 			});
 
 			it('Placeholder property value', () => {
 
-				let script = compiler.compileScript('#record');
+				let script = compiler.compileScript('@record');
 				expect( exec(script) ).to.deep.equal({ name: 'John', truth: 42 });
 
 			});
 
 			it('Placeholder attribute value', () => {
 
-				let script = compiler.compileScript('#record@attr');
+				let script = compiler.compileScript('@record$attr');
 				expect( exec(script) ).to.be.equal('ATTR');
 
 			});
 
 			it('Composed object property value []', () => {
 
-				let script = compiler.compileScript('#record["name"]');
+				let script = compiler.compileScript('@record["name"]');
 				expect( exec(script) ).to.be.equal('John');
 
 			});
+
+			it('Numerical sub-property value', () => {
+
+				let script = compiler.compileScript('#multi.1');
+				expect( exec(script) ).to.be.equal('First');
+
+			});
+
+			it('Numerical sub-attribute value', () => {
+
+				let script = compiler.compileScript('#multi$nestedAttr.1');
+				expect( exec(script) ).to.be.equal('First attr');
+
+			});
+
 
 		});
 
@@ -450,7 +461,7 @@ describe("Syntax", () => {
 
 		it('Complex expression', () => {
 
-			let script = compiler.compileScript('uppercase( if(@singleAttr, $multi.hello, hi) ) ~ " " ~ IF(#record.truth == 42 OR hello@valid, "the TRUTH", "the DOOM") ~ lowercase(" with RADIUS ") ~ (2 * 3.141 * pow(record["truth"], 2))');
+			let script = compiler.compileScript('uppercase( if($singleAttr, #multi.hello, hi) ) ~ " " ~ IF(@record.truth == 42 OR hello$valid, "the TRUTH", "the DOOM") ~ lowercase(" with RADIUS ") ~ (2 * 3.141 * pow(record["truth"], 2))');
 			expect( exec(script) ).to.be.equal('HELLO the TRUTH with radius 11081.448');
 
 		});
