@@ -81,15 +81,15 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-interface"><a href="interfaces/ifunctiondefinition.html" class="tsd-kind-icon">IFunction<wbr>Definition</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/ifunctionlist.html" class="tsd-kind-icon">IFunction<wbr>List</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/imockupnode.html" class="tsd-kind-icon">IMockup<wbr>Node</a></li>
+								<li class="tsd-kind-interface"><a href="interfaces/imockupnodeconfig.html" class="tsd-kind-icon">IMockup<wbr>Node<wbr>Config</a></li>
 								<li class="tsd-kind-interface"><a href="interfaces/iscript.html" class="tsd-kind-icon">IScript</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#compiler" class="tsd-kind-icon">compiler</a></li>
-								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#s1" class="tsd-kind-icon">s1</a></li>
-								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#s2" class="tsd-kind-icon">s2</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#model" class="tsd-kind-icon">model</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -97,6 +97,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function"><a href="globals.html#definedfunction" class="tsd-kind-icon">Defined<wbr>Function</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#emptyfunction" class="tsd-kind-icon">Empty<wbr>Function</a></li>
+								<li class="tsd-kind-function"><a href="globals.html#normalizevariablepath" class="tsd-kind-icon">Normalize<wbr>Variable<wbr>Path</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#parse" class="tsd-kind-icon">Parse</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#parseinterpolation" class="tsd-kind-icon">Parse<wbr>Interpolation</a></li>
 								<li class="tsd-kind-function"><a href="globals.html#parsepropertyref" class="tsd-kind-icon">Parse<wbr>Property<wbr>Ref</a></li>
@@ -106,10 +107,10 @@
 								<li class="tsd-kind-function"><a href="globals.html#normalizebindings" class="tsd-kind-icon">normalize<wbr>Bindings</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section ">
+						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Object literals</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-object-literal"><a href="globals.html#helpers" class="tsd-kind-icon">helpers</a></li>
+								<li class="tsd-kind-object-literal tsd-is-not-exported"><a href="globals.html#nodeproxy" class="tsd-kind-icon">Node<wbr>Proxy</a></li>
 							</ul>
 						</section>
 					</div>
@@ -118,32 +119,12 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
-					<a name="compiler" class="tsd-anchor"></a>
-					<h3>compiler</h3>
-					<div class="tsd-signature tsd-kind-icon">compiler<span class="tsd-signature-symbol">:</span> <a href="classes/compiler.html" class="tsd-signature-type">Compiler</a><span class="tsd-signature-symbol"> =&nbsp;new Compiler()</span></div>
+					<a name="model" class="tsd-anchor"></a>
+					<h3>model</h3>
+					<div class="tsd-signature tsd-kind-icon">model<span class="tsd-signature-symbol">:</span> <a href="classes/modelmockup.html" class="tsd-signature-type">ModelMockup</a><span class="tsd-signature-symbol"> =&nbsp;new ModelMockup({&quot;$valid&quot;: true,&quot;child&quot;: &quot;value&quot;})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/sandbox/index.ts#L13">sandbox/index.ts:13</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
-					<a name="s1" class="tsd-anchor"></a>
-					<h3>s1</h3>
-					<div class="tsd-signature tsd-kind-icon">s1<span class="tsd-signature-symbol">:</span> <a href="interfaces/iscript.html" class="tsd-signature-type">IScript</a><span class="tsd-signature-symbol"> =&nbsp;compiler.compileScript(&quot;my.prop@super.attr&quot;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/sandbox/index.ts#L15">sandbox/index.ts:15</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
-					<a name="s2" class="tsd-anchor"></a>
-					<h3>s2</h3>
-					<div class="tsd-signature tsd-kind-icon">s2<span class="tsd-signature-symbol">:</span> <a href="interfaces/iscript.html" class="tsd-signature-type">IScript</a><span class="tsd-signature-symbol"> =&nbsp;compiler.compileInterpolation(&quot;Hello #{world.name@valid.x}!&quot;)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/sandbox/index.ts#L16">sandbox/index.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/sandbox/index.ts#L15">sandbox/index.ts:15</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -160,7 +141,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Functions.ts#L95">Functions.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Functions.ts#L95">Functions.ts:95</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -183,7 +164,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Functions.ts#L80">Functions.ts:80</a></li>
+									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Functions.ts#L80">Functions.ts:80</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -197,6 +178,29 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="normalizevariablepath" class="tsd-anchor"></a>
+					<h3>Normalize<wbr>Variable<wbr>Path</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">Normalize<wbr>Variable<wbr>Path<span class="tsd-signature-symbol">(</span>path<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Parser.ts#L13">Parser.ts:13</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>path: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="parse" class="tsd-anchor"></a>
 					<h3>Parse</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -206,7 +210,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Parser.ts#L96">Parser.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Parser.ts#L106">Parser.ts:106</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -241,7 +245,7 @@
 									<h5>bindings<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-index-signature">
-											<h5><span class="tsd-signature-symbol">[</span>K: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+											<h5><span class="tsd-signature-symbol">[</span>K: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">number</span></h5>
 										</li>
 									</ul>
 								</li>
@@ -262,7 +266,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Parser.ts#L537">Parser.ts:537</a></li>
+									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Parser.ts#L544">Parser.ts:544</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -291,7 +295,7 @@
 									<h5>bindings<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-index-signature">
-											<h5><span class="tsd-signature-symbol">[</span>K: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+											<h5><span class="tsd-signature-symbol">[</span>K: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">number</span></h5>
 										</li>
 									</ul>
 								</li>
@@ -312,7 +316,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Parser.ts#L589">Parser.ts:589</a></li>
+									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Parser.ts#L596">Parser.ts:596</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -332,15 +336,12 @@
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
 							<ul class="tsd-parameters">
 								<li class="tsd-parameter">
-									<h5>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li class="tsd-parameter">
 									<h5>bindings<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h5>
 									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-										</li>
 									</ul>
+								</li>
+								<li class="tsd-parameter">
+									<h5>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
 						</li>
@@ -356,7 +357,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Parser.ts#L20">Parser.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Parser.ts#L36">Parser.ts:36</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -388,7 +389,7 @@
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">object</span></h4>
 							<ul class="tsd-parameters">
 								<li class="tsd-parameter">
-									<h5>bindings<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>bindings<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></h5>
 								</li>
 								<li class="tsd-parameter">
 									<h5>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
@@ -415,7 +416,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Functions.ts#L46">Functions.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Functions.ts#L46">Functions.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -459,7 +460,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Functions.ts#L65">Functions.ts:65</a></li>
+									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Functions.ts#L65">Functions.ts:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -503,7 +504,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Compiler.ts#L22">Compiler.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Compiler.ts#L22">Compiler.ts:22</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -520,7 +521,7 @@
 									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-index-signature">
-											<h5><span class="tsd-signature-symbol">[</span>K: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+											<h5><span class="tsd-signature-symbol">[</span>K: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">number</span></h5>
 										</li>
 									</ul>
 								</li>
@@ -530,53 +531,84 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group ">
+			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Object literals</h2>
-				<section class="tsd-panel tsd-member tsd-kind-object-literal">
-					<a name="helpers" class="tsd-anchor"></a>
-					<h3>helpers</h3>
-					<div class="tsd-signature tsd-kind-icon">helpers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-object-literal tsd-is-not-exported">
+					<a name="nodeproxy" class="tsd-anchor"></a>
+					<h3>Node<wbr>Proxy</h3>
+					<div class="tsd-signature tsd-kind-icon">Node<wbr>Proxy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Helpers.ts#L14">Helpers.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/ModelMockup.ts#L34">ModelMockup.ts:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Expression helpers</p>
+							<p>Node proxy</p>
 						</div>
 					</div>
-					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal">
-						<a name="helpers.np" class="tsd-anchor"></a>
-						<h3>np</h3>
-						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-object-literal">
-							<li class="tsd-signature tsd-kind-icon">np<span class="tsd-signature-symbol">(</span>arr<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></li>
+					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="nodeproxy.apply" class="tsd-anchor"></a>
+						<h3>apply</h3>
+						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+							<li class="tsd-signature tsd-kind-icon">apply<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="interfaces/imockupnode.html" class="tsd-signature-type">IMockupNode</a>, that<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 						</ul>
 						<ul class="tsd-descriptions">
 							<li class="tsd-description">
 								<aside class="tsd-sources">
 									<ul>
-										<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Helpers.ts#L23">Helpers.ts:23</a></li>
+										<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/ModelMockup.ts#L48">ModelMockup.ts:48</a></li>
 									</ul>
 								</aside>
 								<div class="tsd-comment tsd-typography">
 									<div class="lead">
-										<p>Merge nested properties</p>
+										<p>Node call overload</p>
 									</div>
-									<p>Flattens an property path array</p>
 								</div>
 								<h4 class="tsd-parameters-title">Parameters</h4>
 								<ul class="tsd-parameters">
 									<li>
-										<h5>arr: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
-										<div class="tsd-comment tsd-typography">
-											<div class="lead">
-												<p>Property path array (of arrays)</p>
-											</div>
-										</div>
+										<h5>target: <a href="interfaces/imockupnode.html" class="tsd-signature-type">IMockupNode</a></h5>
+									</li>
+									<li>
+										<h5>that: <span class="tsd-signature-type">any</span></h5>
+									</li>
+									<li>
+										<h5>args: <span class="tsd-signature-type">any</span></h5>
 									</li>
 								</ul>
-								<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h4>
+								<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							</li>
+						</ul>
+					</section>
+					<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+						<a name="nodeproxy.get" class="tsd-anchor"></a>
+						<h3>get</h3>
+						<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-object-literal tsd-is-not-exported">
+							<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="interfaces/imockupnode.html" class="tsd-signature-type">IMockupNode</a>, prop<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/imockupnode.html" class="tsd-signature-type">IMockupNode</a></li>
+						</ul>
+						<ul class="tsd-descriptions">
+							<li class="tsd-description">
+								<aside class="tsd-sources">
+									<ul>
+										<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/ModelMockup.ts#L39">ModelMockup.ts:39</a></li>
+									</ul>
+								</aside>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Getter</p>
+									</div>
+								</div>
+								<h4 class="tsd-parameters-title">Parameters</h4>
+								<ul class="tsd-parameters">
+									<li>
+										<h5>target: <a href="interfaces/imockupnode.html" class="tsd-signature-type">IMockupNode</a></h5>
+									</li>
+									<li>
+										<h5>prop: <span class="tsd-signature-type">string</span></h5>
+									</li>
+								</ul>
+								<h4 class="tsd-returns-title">Returns <a href="interfaces/imockupnode.html" class="tsd-signature-type">IMockupNode</a></h4>
 							</li>
 						</ul>
 					</section>
@@ -612,22 +644,25 @@
 						<a href="interfaces/ifunctionlist.html" class="tsd-kind-icon">IFunction<wbr>List</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/imockupnode.html" class="tsd-kind-icon">IMockup<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/imockupnodeconfig.html" class="tsd-kind-icon">IMockup<wbr>Node<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/iscript.html" class="tsd-kind-icon">IScript</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#compiler" class="tsd-kind-icon">compiler</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#s1" class="tsd-kind-icon">s1</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#s2" class="tsd-kind-icon">s2</a>
+						<a href="globals.html#model" class="tsd-kind-icon">model</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#definedfunction" class="tsd-kind-icon">Defined<wbr>Function</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#emptyfunction" class="tsd-kind-icon">Empty<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#normalizevariablepath" class="tsd-kind-icon">Normalize<wbr>Variable<wbr>Path</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#parse" class="tsd-kind-icon">Parse</a>
@@ -650,8 +685,8 @@
 					<li class=" tsd-kind-function">
 						<a href="globals.html#normalizebindings" class="tsd-kind-icon">normalize<wbr>Bindings</a>
 					</li>
-					<li class=" tsd-kind-object-literal">
-						<a href="globals.html#helpers" class="tsd-kind-icon">helpers</a>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#nodeproxy" class="tsd-kind-icon">Node<wbr>Proxy</a>
 					</li>
 				</ul>
 			</nav>

@@ -91,6 +91,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iscript.html#bindings" class="tsd-kind-icon">bindings</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iscript.html#executor" class="tsd-kind-icon">executor</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iscript.html#js" class="tsd-kind-icon">js</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iscript.html#origin" class="tsd-kind-icon">origin</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="iscript.html#source" class="tsd-kind-icon">source</a></li>
 							</ul>
 						</section>
@@ -105,7 +106,7 @@
 					<div class="tsd-signature tsd-kind-icon">bindings<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Compiler.ts#L45">Compiler.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Compiler.ts#L45">Compiler.ts:45</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -120,7 +121,7 @@
 					<div class="tsd-signature tsd-kind-icon">executor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Function</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Compiler.ts#L42">Compiler.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Compiler.ts#L42">Compiler.ts:42</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -135,7 +136,7 @@
 					<div class="tsd-signature tsd-kind-icon">js<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Compiler.ts#L48">Compiler.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Compiler.ts#L48">Compiler.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -145,12 +146,27 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="origin" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> origin</h3>
+					<div class="tsd-signature tsd-kind-icon">origin<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Compiler.ts#L51">Compiler.ts:51</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ID of script origin - for debugging purpose, can be a filename</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="source" class="tsd-anchor"></a>
 					<h3>source</h3>
 					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/b379509/src/Compiler.ts#L39">Compiler.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Compiler.ts#L39">Compiler.ts:39</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -189,6 +205,12 @@
 					<li class=" tsd-kind-interface">
 						<a href="ifunctionlist.html" class="tsd-kind-icon">IFunction<wbr>List</a>
 					</li>
+					<li class=" tsd-kind-interface">
+						<a href="imockupnode.html" class="tsd-kind-icon">IMockup<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="imockupnodeconfig.html" class="tsd-kind-icon">IMockup<wbr>Node<wbr>Config</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
@@ -204,6 +226,9 @@
 								<a href="iscript.html#js" class="tsd-kind-icon">js</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="iscript.html#origin" class="tsd-kind-icon">origin</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="iscript.html#source" class="tsd-kind-icon">source</a>
 							</li>
 						</ul>
@@ -211,19 +236,16 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#compiler" class="tsd-kind-icon">compiler</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#s1" class="tsd-kind-icon">s1</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="../globals.html#s2" class="tsd-kind-icon">s2</a>
+						<a href="../globals.html#model" class="tsd-kind-icon">model</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#definedfunction" class="tsd-kind-icon">Defined<wbr>Function</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#emptyfunction" class="tsd-kind-icon">Empty<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#normalizevariablepath" class="tsd-kind-icon">Normalize<wbr>Variable<wbr>Path</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#parse" class="tsd-kind-icon">Parse</a>
@@ -246,8 +268,8 @@
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#normalizebindings" class="tsd-kind-icon">normalize<wbr>Bindings</a>
 					</li>
-					<li class=" tsd-kind-object-literal">
-						<a href="../globals.html#helpers" class="tsd-kind-icon">helpers</a>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="../globals.html#nodeproxy" class="tsd-kind-icon">Node<wbr>Proxy</a>
 					</li>
 				</ul>
 			</nav>

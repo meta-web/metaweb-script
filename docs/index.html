@@ -68,33 +68,34 @@
 				<p><img src="http://jenkins.cloud.cryonix.cz/buildStatus/icon?job=metaweb-script" alt="build status"></p>
 				<p>The JavaScript implementation for the META Script of the META Web project.</p>
 				<p>Transpiles the META Script into a native JavaScript code. Ready for metaweb-model package.</p>
+				<p>Check out the <a href="http://play.metahub.cloud/meta-script/">META Script Playground</a> to try it out.</p>
+				<p><strong>NOTE:</strong> This library requires support of the ECMAScript 2015 (ES6) standard.</p>
 				<h2 id="usage">Usage</h2>
 				<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> Compiler = <span class="hljs-built_in">require</span>(<span class="hljs-string">"metaweb-script"</span>).Compiler;
-<span class="hljs-keyword">var</span> Model = <span class="hljs-built_in">require</span>(<span class="hljs-string">"metaweb-model"</span>).Model;
+<span class="hljs-keyword">var</span> Model = <span class="hljs-built_in">require</span>(<span class="hljs-string">"metaweb-script"</span>).ModelMockup;
 
-<span class="hljs-keyword">var</span> helpers = <span class="hljs-built_in">require</span>(<span class="hljs-string">"metaweb-script"</span>).Helpers;
-<span class="hljs-keyword">var</span> placeholders = {};
+<span class="hljs-keyword">var</span> placeholders = { <span class="hljs-string">"scope"</span>: model.root };
 
 <span class="hljs-keyword">var</span> compiler = <span class="hljs-keyword">new</span> Compiler();
-<span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> Model(_); <span class="hljs-comment">//or null if not using model references</span>
+<span class="hljs-keyword">var</span> model = <span class="hljs-keyword">new</span> ModelMockup({ <span class="hljs-string">"name"</span>: <span class="hljs-string">"world"</span> }); <span class="hljs-comment">//or null if not using model references</span>
 
 <span class="hljs-comment">//Compile script</span>
 <span class="hljs-keyword">var</span> script1 = compiler.parseScript(<span class="hljs-string">"1+1"</span>);
 
 <span class="hljs-comment">//Execute</span>
-<span class="hljs-keyword">var</span> res1 = script1.executor.call(<span class="hljs-literal">null</span>, model, placeholders, helpers);
+<span class="hljs-keyword">var</span> res1 = script1.executor.call(<span class="hljs-literal">null</span>, model.root, placeholders);
 
 <span class="hljs-comment">//Compile string interpolation</span>
-<span class="hljs-keyword">var</span> script2 = compiler.compileInterpolation(<span class="hljs-string">"Hello #{world}!"</span>);
+<span class="hljs-keyword">var</span> script2 = compiler.compileInterpolation(<span class="hljs-string">"Hello #{name}!"</span>);
 
 <span class="hljs-comment">//Execute</span>
-<span class="hljs-keyword">var</span> res2 = <span class="hljs-keyword">var</span> res1 = script1.executor.call(<span class="hljs-literal">null</span>, model, placeholders, helpers);
+<span class="hljs-keyword">var</span> res2 = <span class="hljs-keyword">var</span> res1 = script1.executor.call(<span class="hljs-literal">null</span>, model.root, placeholders);
 
 <span class="hljs-comment">//Compile property reference</span>
-<span class="hljs-keyword">var</span> script3 = compiler.compilePropertyRef(<span class="hljs-string">"hello.world"</span>);
+<span class="hljs-keyword">var</span> script3 = compiler.compilePropertyRef(<span class="hljs-string">"name"</span>);
 
 <span class="hljs-comment">//Execute</span>
-<span class="hljs-keyword">var</span> res3 = script1.executor.call(<span class="hljs-literal">null</span>, model, placeholders, helpers);
+<span class="hljs-keyword">var</span> res3 = script1.executor.call(<span class="hljs-literal">null</span>, model.root, placeholders);
 
 <span class="hljs-comment">//Register custom function</span>
 compiler.registerFunction(<span class="hljs-string">'hello'</span>, {
@@ -103,7 +104,7 @@ compiler.registerFunction(<span class="hljs-string">'hello'</span>, {
     <span class="hljs-attr">maxArgs</span>: <span class="hljs-number">2</span>
 });
 
-compiler.parseScript(<span class="hljs-string">"hello('John', 'Jack')"</span>); <span class="hljs-comment">//return "Hello John, Jack";</span>
+compiler.compileScript(<span class="hljs-string">"hello('John', 'Jack')"</span>); <span class="hljs-comment">//return "Hello John, Jack";</span>
 </code></pre>
 				<h3 id="typescript">TypeScript</h3>
 				<p>This package also contains TypeScript definition file and can be directly imported.</p>
@@ -139,35 +140,36 @@ compiler.parseScript(<span class="hljs-string">"hello('John', 'Jack')"</span>); 
 				<h3 id="properties-attributes">Properties &amp; Attributes</h3>
 				<p>META Script always references META Model properties and optionally it&#39;s attributes - see <code>metaweb-model</code> package.</p>
 				<p>Property is written using following notation:</p>
-				<p><code>[$#]&lt;name&gt;[.&lt;sub_name&gt;[@&lt;attribute&gt;.&lt;sub_attribute&gt;]][value_property]</code></p>
+				<p><code>[@#]&lt;name&gt;[.&lt;sub_name&gt;[$&lt;attribute&gt;.&lt;sub_attribute&gt;]][value_property]</code></p>
 				<ul>
-					<li>Variable or attribute name can contain only english letters, numbers and underscores</li>
+					<li>Variable or attribute name can contain only English letters, numbers and underscores</li>
 					<li>Variable or attribute name must NOT start with a number</li>
-					<li><code>$</code> sign references property path from a model root</li>
-					<li><code>#</code> sign references a property placeholder</li>
-					<li><code>.</code> references sub property or sub attribute in a model tree</li>
-					<li><code>@</code> sign references a property attribute</li>
+					<li>Variable or attribute name cannot start with &#39;__&#39; - reserved for internal model properties</li>
+					<li><code>#</code> sign references property path from a model root</li>
+					<li><code>@</code> sign references a property placeholder</li>
+					<li><code>.</code> references sub property or sub-attribute in a model tree</li>
+					<li><code>$</code> sign references a property attribute</li>
 				</ul>
-				<p>Each property or an attribute returns a value. If value is an object we can access it&#39;s properties using square bracket notation:</p>
+				<p>Each property or an attribute returns a value. If the value is an object we can access its properties using square bracket notation:</p>
 				<p><code>my.prop[&#39;personal&#39;][&#39;first_name&#39;]</code></p>
 				<p>or with an attribute:</p>
-				<p><code>my.prop@options[0]</code></p>
+				<p><code>my.prop$options[0]</code></p>
 				<p>Some examples:</p>
-				<pre><code>/<span class="hljs-bullet">* Local property *</span>/
+				<pre><code><span class="hljs-comment">/* Local property */</span>
 firstName
 
-/<span class="hljs-bullet">* Root property *</span>/
-$customer.firstName */
+<span class="hljs-comment">/* Root property */</span>
+<span class="hljs-selector-id">#customer</span><span class="hljs-selector-class">.firstName</span> */
 
-/<span class="hljs-bullet">* Placeholder property *</span>/
-<span class="hljs-section">#record.firstName</span>
+<span class="hljs-comment">/* Placeholder property */</span>
+@record<span class="hljs-selector-class">.firstName</span>
 
-/<span class="hljs-bullet">* Access to an attribute *</span>/
-firstName@valid
-firstName@required
+<span class="hljs-comment">/* Access to an attribute */</span>
+firstName<span class="hljs-variable">$valid</span>
+firstName<span class="hljs-variable">$required</span>
 
-/<span class="hljs-bullet">* Access to a value property *</span>/
-$user.role@items[<span class="hljs-string">0</span>][<span class="hljs-symbol">'label'</span>]
+<span class="hljs-comment">/* Access to a value property */</span>
+<span class="hljs-selector-id">#user</span>.role<span class="hljs-variable">$items</span>[<span class="hljs-number">0</span>][<span class="hljs-string">'label'</span>]
 </code></pre><h3 id="operators">Operators</h3>
 				<ul>
 					<li>Arithmetic: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code> (modulo)</li>
@@ -176,14 +178,14 @@ $user.role@items[<span class="hljs-string">0</span>][<span class="hljs-symbol">'
 					<li>String: <code>~</code> (string concat)</li>
 				</ul>
 				<h3 id="string-interpolation">String Interpolation</h3>
-				<p>We can use <code>#{variable}</code> notation to easily insert variables into strings:</p>
+				<p>We can use <code>#{expression}</code> notation to easily insert expressions or variables into strings:</p>
 				<pre><code><span class="hljs-string">'Hello <span class="hljs-subst">#{name}</span>'</span>
 </code></pre><h3 id="functions">Functions</h3>
-				<p>Functions are type of operand which always return a value and accept arguments.</p>
+				<p>Functions are a type of the operand which always return a value and accept arguments.</p>
 				<p>Function is written as:</p>
 				<p><code>&lt;function_name&gt;(&lt;arguments&gt;)</code></p>
 				<ul>
-					<li>Function name can contains only english letters, numbers and underscores</li>
+					<li>Function name can contain only English letters, numbers and underscores</li>
 					<li>Function name must NOT start with a number</li>
 					<li>Function name must be always followed with round brackets</li>
 					<li>Function arguments are separated using <code>,</code></li>
@@ -222,13 +224,15 @@ $user.role@items[<span class="hljs-string">0</span>][<span class="hljs-symbol">'
 </code></pre><h3 id="more-examples">More Examples</h3>
 				<p>Following examples represent various META Model use-cases. META Script expressions are written in double quotes.</p>
 				<pre><code class="lang-plain">/* Condition - field is required only if sameAsInvoice is not true */
-#record.delivery.address@required = &quot;!#record.delivery.sameAsInvoice&quot;
-#record.delivery.address@required = &quot;NOT #record.delivery.sameAsInvoice&quot;
-#record.delivery.address@required = &quot;if(#record.delivery.sameAsInvoice, false, true)&quot;
+@record.delivery.address$required = &quot;!@record.delivery.sameAsInvoice&quot;
+@record.delivery.address$required = &quot;NOT @record.delivery.sameAsInvoice&quot;
+@record.delivery.address$required = &quot;if(@record.delivery.sameAsInvoice, false, true)&quot;
 
 /* Strings - fullName consists of firstName and lastName properties delimeted by a space string */
-fullName = &quot;&#39;#{firstName} #{lastName}&#39;&quot;
 fullName = &quot;firstName ~ &#39; &#39; ~ lastName&quot;
+
+/* Or with interpolation parser */
+fullName = &quot;#{firstName} #{lastName}&quot;
 
 /* Arithmetics */
 totalPrice = &quot;(pricePerHour * 24) * days&quot;
@@ -236,19 +240,19 @@ y = &quot;x * 1.5 + a&quot;
 c = &quot;sqrt( pow(a, 2) + pow(b, 2) )&quot;
 
 /* Enable if another field is not empty */
-prop@readonly = &quot;empty(name)&quot;
+prop$readonly = &quot;empty(name)&quot;
 
 /* Enable if another field is valid */
-prop@readonly = &quot;not anotherProp@valid&quot;
+prop$readonly = &quot;not anotherProp$valid&quot;
 
 /* Required if age is grater or equal than 21 */
-prop@required = &quot;$customer.age &gt;= 21&quot;
+prop$required = &quot;#customer.age &gt;= 21&quot;
 </code></pre>
 				<h2 id="building-and-testing">Building and Testing</h2>
 				<pre><code>npm <span class="hljs-keyword">run</span><span class="bash"> build
 </span>npm test
 </code></pre><h2 id="license">License</h2>
-				<p>The MIT License (MIT)<br>(c) 2017 Jiri Hybek <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x6a;&#105;&#x72;&#x69;&#x40;&#104;&#x79;&#x62;&#x65;&#107;&#x2e;&#99;&#122;">&#x6a;&#105;&#x72;&#x69;&#x40;&#104;&#x79;&#x62;&#x65;&#107;&#x2e;&#99;&#122;</a></p>
+				<p>The MIT License (MIT)<br>(c) 2017 Jiri Hybek <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x6a;&#x69;&#114;&#x69;&#64;&#x68;&#x79;&#98;&#x65;&#x6b;&#46;&#99;&#122;">&#x6a;&#x69;&#114;&#x69;&#64;&#x68;&#x79;&#98;&#x65;&#x6b;&#46;&#99;&#122;</a></p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -280,22 +284,25 @@ prop@required = &quot;$customer.age &gt;= 21&quot;
 						<a href="interfaces/ifunctionlist.html" class="tsd-kind-icon">IFunction<wbr>List</a>
 					</li>
 					<li class=" tsd-kind-interface">
+						<a href="interfaces/imockupnode.html" class="tsd-kind-icon">IMockup<wbr>Node</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/imockupnodeconfig.html" class="tsd-kind-icon">IMockup<wbr>Node<wbr>Config</a>
+					</li>
+					<li class=" tsd-kind-interface">
 						<a href="interfaces/iscript.html" class="tsd-kind-icon">IScript</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#compiler" class="tsd-kind-icon">compiler</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#s1" class="tsd-kind-icon">s1</a>
-					</li>
-					<li class=" tsd-kind-variable tsd-is-not-exported">
-						<a href="globals.html#s2" class="tsd-kind-icon">s2</a>
+						<a href="globals.html#model" class="tsd-kind-icon">model</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#definedfunction" class="tsd-kind-icon">Defined<wbr>Function</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#emptyfunction" class="tsd-kind-icon">Empty<wbr>Function</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#normalizevariablepath" class="tsd-kind-icon">Normalize<wbr>Variable<wbr>Path</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#parse" class="tsd-kind-icon">Parse</a>
@@ -318,8 +325,8 @@ prop@required = &quot;$customer.age &gt;= 21&quot;
 					<li class=" tsd-kind-function">
 						<a href="globals.html#normalizebindings" class="tsd-kind-icon">normalize<wbr>Bindings</a>
 					</li>
-					<li class=" tsd-kind-object-literal">
-						<a href="globals.html#helpers" class="tsd-kind-icon">helpers</a>
+					<li class=" tsd-kind-object-literal tsd-is-not-exported">
+						<a href="globals.html#nodeproxy" class="tsd-kind-icon">Node<wbr>Proxy</a>
 					</li>
 				</ul>
 			</nav>

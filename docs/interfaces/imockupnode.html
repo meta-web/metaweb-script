@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>InvalidVariableError | metaweb-script</title>
+	<title>IMockupNode | metaweb-script</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="invalidvariableerror.html">InvalidVariableError</a>
+					<a href="imockupnode.html">IMockupNode</a>
 				</li>
 			</ul>
-			<h1>Class InvalidVariableError</h1>
+			<h1>Interface IMockupNode</h1>
 		</div>
 	</div>
 </header>
@@ -69,141 +69,89 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Parse exception class</p>
+						<p>Node instance interface</p>
 					</div>
-					<p>Thrown when parser encounters an error</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="tsd-signature-type">Error</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">InvalidVariableError</span>
-							</li>
-						</ul>
+						<span class="target">IMockupNode</span>
 					</li>
 				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3 class="tsd-before-signature">Callable</h3>
+				<ul class="tsd-signatures tsd-kind-interface">
+					<li class="tsd-signature tsd-kind-icon">__call<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+				</ul>
+				<ul class="tsd-descriptions">
+					<li class="tsd-description">
+						<aside class="tsd-sources">
+							<ul>
+								<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/ModelMockup.ts#L23">ModelMockup.ts:23</a></li>
+							</ul>
+						</aside>
+						<div class="tsd-comment tsd-typography">
+							<div class="lead">
+								<p>Node instance interface</p>
+							</div>
+						</div>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-kind-interface">
+				<h3 class="tsd-before-signature">Indexable</h3>
+				<div class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">[</span>K: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">any</span></div>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Node instance interface</p>
+					</div>
+				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="invalidvariableerror.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="invalidvariableerror.html#source" class="tsd-kind-icon">source</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><a href="invalidvariableerror.html#error" class="tsd-kind-icon">Error</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="invalidvariableerror.html#message" class="tsd-kind-icon">message</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static"><a href="invalidvariableerror.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited tsd-is-static"><a href="invalidvariableerror.html#stack" class="tsd-kind-icon">stack</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="imockupnode.html#___children" class="tsd-kind-icon">___children</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="imockupnode.html#___value" class="tsd-kind-icon">___value</a></li>
 							</ul>
 						</section>
 					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Invalid<wbr>Variable<wbr>Error<span class="tsd-signature-symbol">(</span>script<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="invalidvariableerror.html" class="tsd-signature-type">InvalidVariableError</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Errors.ts#L52">Errors.ts:52</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Error constructor</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>script: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Expression source code</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="invalidvariableerror.html" class="tsd-signature-type">InvalidVariableError</a></h4>
-						</li>
-					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="source" class="tsd-anchor"></a>
-					<h3>source</h3>
-					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="___children" class="tsd-anchor"></a>
+					<h3>___children</h3>
+					<div class="tsd-signature tsd-kind-icon">___children<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/Errors.ts#L52">Errors.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/ModelMockup.ts#L26">ModelMockup.ts:26</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Source script</p>
-						</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>K: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="imockupnode.html" class="tsd-signature-type">IMockupNode</a></h5>
+							</li>
+						</ul>
 					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static">
-					<a name="error" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> Error</h3>
-					<div class="tsd-signature tsd-kind-icon">Error<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ErrorConstructor</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="___value" class="tsd-anchor"></a>
+					<h3>___value</h3>
+					<div class="tsd-signature tsd-kind-icon">___value<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in /Users/jirihybek/Devel/metaWeb/metaweb-script/node_modules/typedoc/node_modules/typescript/lib/lib.es6.d.ts:884</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-					<a name="message" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> message</h3>
-					<div class="tsd-signature tsd-kind-icon">message<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from Error.message</p>
-						<ul>
-							<li>Defined in /Users/jirihybek/Devel/metaWeb/metaweb-script/node_modules/typedoc/node_modules/typescript/lib/lib.es6.d.ts:874</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-					<a name="name" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from Error.name</p>
-						<ul>
-							<li>Defined in /Users/jirihybek/Devel/metaWeb/metaweb-script/node_modules/typedoc/node_modules/typescript/lib/lib.es6.d.ts:873</li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited tsd-is-static">
-					<a name="stack" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> <span class="tsd-flag ts-flagOptional">Optional</span> stack</h3>
-					<div class="tsd-signature tsd-kind-icon">stack<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from Error.stack</p>
-						<p>Overrides Error.stack</p>
-						<ul>
-							<li>Defined in /Users/jirihybek/Devel/metaWeb/metaweb-script/node_modules/typedoc/node_modules/typescript/lib/lib.es6.d.ts:875</li>
+							<li>Defined in <a href="https://github.com/meta-web/metaweb-script/blob/d753cfc/src/ModelMockup.ts#L25">ModelMockup.ts:25</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -220,55 +168,43 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
-						<a href="compiler.html" class="tsd-kind-icon">Compiler</a>
+						<a href="../classes/compiler.html" class="tsd-kind-icon">Compiler</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/invalidvariableerror.html" class="tsd-kind-icon">Invalid<wbr>Variable<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/modelmockup.html" class="tsd-kind-icon">Model<wbr>Mockup</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="ifunctiondefinition.html" class="tsd-kind-icon">IFunction<wbr>Definition</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="ifunctionlist.html" class="tsd-kind-icon">IFunction<wbr>List</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class">
-						<a href="invalidvariableerror.html" class="tsd-kind-icon">Invalid<wbr>Variable<wbr>Error</a>
+					<li class="current tsd-kind-interface">
+						<a href="imockupnode.html" class="tsd-kind-icon">IMockup<wbr>Node</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="invalidvariableerror.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="imockupnode.html#___children" class="tsd-kind-icon">___children</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="invalidvariableerror.html#source" class="tsd-kind-icon">source</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static">
-								<a href="invalidvariableerror.html#error" class="tsd-kind-icon">Error</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="invalidvariableerror.html#message" class="tsd-kind-icon">message</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-static">
-								<a href="invalidvariableerror.html#name" class="tsd-kind-icon">name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited tsd-is-static">
-								<a href="invalidvariableerror.html#stack" class="tsd-kind-icon">stack</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="imockupnode.html#___value" class="tsd-kind-icon">___value</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class">
-						<a href="modelmockup.html" class="tsd-kind-icon">Model<wbr>Mockup</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="parseerror.html" class="tsd-kind-icon">Parse<wbr>Error</a>
+					<li class=" tsd-kind-interface">
+						<a href="imockupnodeconfig.html" class="tsd-kind-icon">IMockup<wbr>Node<wbr>Config</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/ifunctiondefinition.html" class="tsd-kind-icon">IFunction<wbr>Definition</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/ifunctionlist.html" class="tsd-kind-icon">IFunction<wbr>List</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/imockupnode.html" class="tsd-kind-icon">IMockup<wbr>Node</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/imockupnodeconfig.html" class="tsd-kind-icon">IMockup<wbr>Node<wbr>Config</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/iscript.html" class="tsd-kind-icon">IScript</a>
+						<a href="iscript.html" class="tsd-kind-icon">IScript</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="../globals.html#model" class="tsd-kind-icon">model</a>
