@@ -70,7 +70,7 @@ When a script is transpiled then following interface is returned as a result:
 var res = {
     source: string, //Original source code
     executor: Function, //Transpiled function instance
-    bindings: Array, //Array of references property paths, used for model change binding
+    bindings: Array<string>, //Array of references property paths, used for model change binding
     js: string //Transpiled JavaScript code from which executor function is created
 };
 ```

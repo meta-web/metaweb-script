@@ -19,12 +19,12 @@ import {InvalidVariableError} from './Errors';
  *
  * @param bindings Bindings hashmap
  */
-export function normalizeBindings(bindings: { [K: string]: number }){
+export function normalizeBindings(bindings: { [K: string]: Array<string> }){
 
 	let res = [];
 
 	for(let i in bindings)
-		res.push(i);
+		res.push(bindings[i]);
 
 	return res;
 
@@ -42,7 +42,7 @@ export interface IScript {
 	executor: Function;
 
 	/** Array of variable bindings **/
-	bindings: Array<Array<string>>;
+	bindings: Array<string>;
 
 	/** Transpiled javascript code for debugging **/
 	js: string;

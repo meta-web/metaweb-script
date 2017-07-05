@@ -120,7 +120,7 @@ compiler.compileScript(<span class="hljs-string">"hello('John', 'Jack')"</span>)
 				<pre><code class="lang-javascript"><span class="hljs-keyword">var</span> res = {
     <span class="hljs-attr">source</span>: string, <span class="hljs-comment">//Original source code</span>
     executor: <span class="hljs-built_in">Function</span>, <span class="hljs-comment">//Transpiled function instance</span>
-    bindings: <span class="hljs-built_in">Array</span>, <span class="hljs-comment">//Array of references property paths, used for model change binding</span>
+    bindings: <span class="hljs-built_in">Array</span>&lt;string&gt;, <span class="hljs-comment">//Array of references property paths, used for model change binding</span>
     js: string <span class="hljs-comment">//Transpiled JavaScript code from which executor function is created</span>
 };
 </code></pre>
@@ -252,7 +252,7 @@ prop$required = &quot;#customer.age &gt;= 21&quot;
 				<pre><code>npm <span class="hljs-keyword">run</span><span class="bash"> build
 </span>npm test
 </code></pre><h2 id="license">License</h2>
-				<p>The MIT License (MIT)<br>(c) 2017 Jiri Hybek <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#111;&#58;&#x6a;&#x69;&#114;&#x69;&#64;&#x68;&#x79;&#98;&#x65;&#x6b;&#46;&#99;&#122;">&#x6a;&#x69;&#114;&#x69;&#64;&#x68;&#x79;&#98;&#x65;&#x6b;&#46;&#99;&#122;</a></p>
+				<p>The MIT License (MIT)<br>(c) 2017 Jiri Hybek <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#106;&#105;&#x72;&#x69;&#x40;&#x68;&#121;&#98;&#101;&#107;&#x2e;&#99;&#x7a;">&#106;&#105;&#x72;&#x69;&#x40;&#x68;&#121;&#98;&#101;&#107;&#x2e;&#99;&#x7a;</a></p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

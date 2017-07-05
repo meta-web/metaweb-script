@@ -66,7 +66,7 @@ describe("Compiler", () => {
 		let script = compiler.compileInterpolation('Helllo #{name}!');
 
 		expect(script.bindings).to.deep.equal(
-			[ "{scope}.name" ]
+			[ ["scope", "name"] ]
 		);
 
 		expect(script.source).to.exist;
@@ -81,7 +81,7 @@ describe("Compiler", () => {
 		let script = compiler.compilePropertyRef('varName.subName');
 
 		expect(script.bindings).to.deep.equal(
-			[ "{scope}.varName.subName" ]
+			[ ["scope", "varName", "subName"] ]
 		);
 
 		expect(script.source).to.exist;
@@ -99,9 +99,8 @@ describe("Compiler", () => {
 		expect(
 			res
 		).to.deep.include({
-			bindings: [ "{scope}.varName.subName" ],
-			name: "vid",
-			placeholders: { "scope": true },
+			bindings: [ ["scope", "varName", "subName"] ],
+			name: "vid"
 		});
 
 	});

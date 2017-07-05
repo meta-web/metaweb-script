@@ -30,6 +30,8 @@ console.log(ParseVariable("local.var", "1", false));
 console.log(ParseVariable("local$attr", "1", false));
 console.log(ParseVariable("#root.var", "1", false));
 console.log(ParseVariable("@record.var", "1", false));
+console.log(ParseVariable("$directAttr", "1", false));
+console.log(ParseVariable("#$directRootAttr", "1", false));
 console.log("---");
 console.log(ParsePropertyRef("@record.var"));
 console.log("---");

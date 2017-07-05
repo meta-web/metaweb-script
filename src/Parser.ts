@@ -38,34 +38,35 @@ export function ParseVariable(exp: string, id: string, propertyPointer: boolean 
 	let parts = exp.split("$");
 	let path = parts[0].split(".");
 	let root = path.shift();
-	let placeholders = {};
-	let bindings = null;
-
+	
+	let bindings;
 	let key;
 
 	//Check key path
-	if(root.substr(0, 1) == "#"){
+	if(root == "#"){
+
+		key = "r" + NormalizeVariablePath(path);
+		bindings = [ null ].concat(path);
+
+	} else if(root.substr(0, 1) == "#"){
 
 		key = "r." + root.substr(1) + NormalizeVariablePath(path);
-		bindings = root.substr(1) + ( path.length > 0 ? "." + path.join(".") : "" );
+		bindings = [ null, root.substr(1) ].concat(path);
 
 	} else if(root.substr(0, 1) == "@"){
 
 		key = "p." + root.substr(1) + NormalizeVariablePath(path);
-		bindings = "{" + root.substr(1) + "}" + ( path.length > 0 ? "." + path.join(".") : "" );
-		placeholders[root.substr(1)] = true;
+		bindings = [ root.substr(1) ].concat(path);
 
 	} else if(root == ""){
 
 		key = "p.scope";
-		bindings = "{scope}";
-		placeholders["scope"] = true;
+		bindings = [ "scope" ];
 
 	} else {
 
 		key = "p.scope." + root + NormalizeVariablePath(path);
-		bindings = "{scope}." + root + ( path.length > 0 ? "." + path.join(".") : "" );
-		placeholders["scope"] = true;
+		bindings = [ "scope", root ].concat(path);
 
 	}
 
@@ -75,8 +76,8 @@ export function ParseVariable(exp: string, id: string, propertyPointer: boolean 
 		let attrPath = parts[1].split(".");
 		let attrRoot = attrPath.shift();
 
-		key+= ( root == "#" ? "" : "." ) + "$" + attrRoot + NormalizeVariablePath(attrPath);
-		bindings+= ( root == "#" ? "" : "." ) + "$" + attrRoot + ( attrPath.length > 0 ? "." + attrPath.join(".") : "" );
+		key+= ".$" + attrRoot + NormalizeVariablePath(attrPath);
+		bindings = bindings.concat( [ "$" + attrRoot] ).concat(attrPath);
 
 	}
 
@@ -90,8 +91,7 @@ export function ParseVariable(exp: string, id: string, propertyPointer: boolean 
 	return {
 		name: 'v' + id,
 		source: varSrc,
-		bindings: bindings,
-		placeholders: placeholders
+		bindings: bindings
 	}
 
 }
@@ -123,8 +123,7 @@ export function Parse(functions: IFunctionList, script: string, returnsString: b
 	let variableMap: { [ K: string ]: string } = {};
 	let variableDefinitions: Array<string> = [];
 	
-	let variableBindings: { [ K: string ]: number } = {};
-	let placeholders: { [ K: string ]: boolean } = {} ;
+	let variableBindings: { [ K: string ]: Array<string> } = {};
 
 	let functionsPatternList = [];
 
@@ -451,10 +450,10 @@ export function Parse(functions: IFunctionList, script: string, returnsString: b
 					variableDefinitions.push(_parsedVar.source);
 					variableMap[token] = _parsedVar.name;
 
-					variableBindings[_parsedVar.bindings] = (variableBindings[_parsedVar.bindings] || 0) + 1;
+					let variableHash = _parsedVar.bindings.join(".");
 
-					for(let i in _parsedVar.placeholders)
-						placeholders[i] = true;
+					if(!variableBindings[variableHash])
+						variableBindings[variableHash] = _parsedVar.bindings;
 
 				} catch(e){
 
@@ -504,17 +503,6 @@ export function Parse(functions: IFunctionList, script: string, returnsString: b
 
 	flushBuffer();
 
-	//Placeholder checks
-	let placeholderChecks = [];
-
-	for(let name in placeholders)
-		placeholderChecks.push('if(!p["' + name + '"]) throw new Error(pe+"' + name + '");');
-
-	if(placeholderChecks.length > 0){
-		placeholderChecks.unshift("p=p||{};");
-		placeholderChecks.unshift('pe="Placeholder must be set @";');
-	}
-
 	//Final code
 	let evalCode;
 
@@ -530,7 +518,7 @@ export function Parse(functions: IFunctionList, script: string, returnsString: b
 
 	return {
 		bindings: variableBindings,
-		source: placeholderChecks.join("") + variableDefinitions.join("") + evalCode
+		source: variableDefinitions.join("") + evalCode
 	}
 
 };
@@ -544,7 +532,7 @@ export function Parse(functions: IFunctionList, script: string, returnsString: b
 export function ParseInterpolation(functions: IFunctionList, str: string){
 
 	let matches = str.match(/\#\{[^}]+\}/g);
-	let bindings: { [K: string]: number } = {};
+	let bindings: { [K: string]: Array<string> } = {};
 
 	let matchesMap: { [K: string]: string } = {}; 
 	let varDefinitions: Array<string> = [];
@@ -559,7 +547,7 @@ export function ParseInterpolation(functions: IFunctionList, str: string){
 				let parsed = Parse(functions, exp, true);
 				
 				for(let i in parsed.bindings)
-					bindings[i] = (bindings[i] || 0) + parsed.bindings[i];
+					bindings[i] = parsed.bindings[i];
 
 				let varId = String(varDefinitions.length);
 
@@ -602,23 +590,12 @@ export function ParsePropertyRef(exp: string){
 
 	let _var = ParseVariable(exp, "", true);
 
-	//Placeholder checks
-	let placeholderChecks = [];
-
-	for(let name in _var.placeholders)
-		placeholderChecks.push('if(!p["' + name + '"]) throw new Error(pe+"' + name + '");');
-
-	if(placeholderChecks.length > 0){
-		placeholderChecks.unshift("p=p||{};");
-		placeholderChecks.unshift('pe="Placeholder must be set @";');
-	}
-
 	let bindings = {};
-	bindings[_var.bindings] = 1;
+	bindings[_var.bindings.join(".")] = _var.bindings;
 
 	return {
 		bindings: bindings,
-		source: placeholderChecks.join("") + _var.source + 'return ' + _var.name + ';'
+		source: _var.source + 'return ' + _var.name + ';'
 	};
 
 }

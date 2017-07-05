@@ -12,9 +12,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName", "id", false)
 			).to.deep.include({
-				bindings: "{scope}.varName",
-				name: "vid",
-				placeholders: { "scope": true },
+				bindings: ["scope", "varName"],
+				name: "vid"
 			});
 
 		});
@@ -24,9 +23,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName.subName", "id", false)
 			).to.deep.include({
-				bindings: "{scope}.varName.subName",
-				name: "vid",
-				placeholders: { "scope": true }
+				bindings: ["scope", "varName", "subName"],
+				name: "vid"
 			});
 
 		});
@@ -36,9 +34,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("#varName", "id", false)
 			).to.deep.include({
-				bindings: "varName",
-				name: "vid",
-				placeholders: {}
+				bindings: [null, "varName"],
+				name: "vid"
 			});
 
 		});
@@ -48,9 +45,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("#varName.subName", "id", false)
 			).to.deep.include({
-				bindings: "varName.subName",
-				name: "vid",
-				placeholders: {}
+				bindings: [null, "varName", "subName"],
+				name: "vid"
 			});
 
 		});
@@ -60,9 +56,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("@varName", "id", false)
 			).to.deep.include({
-				bindings: "{varName}",
-				name: "vid",
-				placeholders: { varName: true }
+				bindings: ["varName"],
+				name: "vid"
 			});
 
 		});
@@ -72,9 +67,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("@varName.subName", "id", false)
 			).to.deep.include({
-				bindings: "{varName}.subName",
-				name: "vid",
-				placeholders: { varName: true }
+				bindings: ["varName", "subName"],
+				name: "vid"
 			});
 
 		});
@@ -84,9 +78,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("$attr", "id", false)
 			).to.deep.include({
-				bindings: "{scope}.$attr",
-				name: "vid",
-				placeholders: { scope: true }
+				bindings: ["scope", "$attr"],
+				name: "vid"
 			});
 
 		});
@@ -96,9 +89,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("$attr.sub", "id", false)
 			).to.deep.include({
-				bindings: "{scope}.$attr.sub",
-				name: "vid",
-				placeholders: { scope: true }
+				bindings: ["scope", "$attr", "sub"],
+				name: "vid"
 			});
 
 		});
@@ -108,9 +100,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName$attr", "id", false)
 			).to.deep.include({
-				bindings: "{scope}.varName.$attr",
-				name: "vid",
-				placeholders: { scope: true }
+				bindings: ["scope", "varName", "$attr"],
+				name: "vid"
 			});
 
 		});
@@ -120,9 +111,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName$attr.sub", "id", false)
 			).to.deep.include({
-				bindings: "{scope}.varName.$attr.sub",
-				name: "vid",
-				placeholders: { scope: true }
+				bindings: ["scope", "varName", "$attr", "sub"],
+				name: "vid"
 			});
 
 		});
@@ -132,9 +122,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName.subName$attr.sub", "id", false)
 			).to.deep.include({
-				bindings: "{scope}.varName.subName.$attr.sub",
-				name: "vid",
-				placeholders: { scope: true }
+				bindings: ["scope", "varName", "subName", "$attr", "sub"],
+				name: "vid"
 			});
 
 		});
@@ -144,9 +133,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName.1.name", "id", false)
 			).to.deep.include({
-				bindings: "{scope}.varName.1.name",
-				name: "vid",
-				placeholders: { scope: true }
+				bindings: ["scope", "varName", "1", "name"],
+				name: "vid"
 			});
 
 		});
@@ -157,9 +145,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName$attr.1.name", "id", false)
 			).to.deep.include({
-				bindings: "{scope}.varName.$attr.1.name",
-				name: "vid",
-				placeholders: { scope: true }
+				bindings: ["scope", "varName", "$attr", "1", "name"],
+				name: "vid"
 			});
 
 		});
@@ -169,9 +156,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("#$attr", "id", false)
 			).to.deep.include({
-				bindings: "$attr",
-				name: "vid",
-				placeholders: {}
+				bindings: [null, "$attr"],
+				name: "vid"
 			});
 
 		});
@@ -181,9 +167,8 @@ describe("Parser", () => {
 			expect(
 				ParseVariable("varName.subName", "id", true)
 			).to.deep.include({
-				bindings: "{scope}.varName.subName",
-				name: "vid",
-				placeholders: { scope: true }
+				bindings: ["scope", "varName", "subName"],
+				name: "vid"
 			});
 
 		});
@@ -197,12 +182,12 @@ describe("Parser", () => {
 			let r = Parse({}, 'if($singleAttr, #multi.hello, hi) ~ " " ~ IF(@record.truth == 42 OR hello$valid, "the TRUTH", "the DOOM") ~ " with RADIUS " ~ (2 * 3.141 * record["truth"])');
 
 			expect(r.bindings).to.deep.include({
-				"{scope}.$singleAttr": 1,
-				"multi.hello": 1,
-				"{scope}.hi": 1,
-				"{record}.truth": 1,
-				"{scope}.hello.$valid": 1,
-				"{scope}.record": 1
+				"scope.$singleAttr": ["scope","$singleAttr"],
+				".multi.hello": [null, "multi", "hello"],
+				"scope.hi": ["scope", "hi"],
+				"record.truth": ["record", "truth"],
+				"scope.hello.$valid": ["scope", "hello", "$valid"],
+				"scope.record": ["scope", "record"]
 			});
 
 			expect(r).to.has.property('source');
@@ -218,7 +203,7 @@ describe("Parser", () => {
 			let r = ParseInterpolation({}, 'Hello #{name}!');
 
 			expect(r.bindings).to.deep.include({
-				"{scope}.name": 1
+				"scope.name": ["scope", "name"]
 			});
 
 			expect(r).to.has.property('source');
@@ -230,7 +215,7 @@ describe("Parser", () => {
 			let r = ParseInterpolation({}, '#{name}!');
 
 			expect(r.bindings).to.deep.include({
-				"{scope}.name": 1
+				"scope.name": ["scope", "name"]
 			});
 
 			expect(r).to.has.property('source');
@@ -242,7 +227,7 @@ describe("Parser", () => {
 			let r = ParseInterpolation({}, 'Hello #{name}');
 
 			expect(r.bindings).to.deep.include({
-				"{scope}.name": 1
+				"scope.name": ["scope", "name"]
 			});
 
 			expect(r).to.has.property('source');
@@ -254,8 +239,8 @@ describe("Parser", () => {
 			let r = ParseInterpolation({}, 'Hello #{firstName} #{lastName}!');
 
 			expect(r.bindings).to.deep.include({
-				"{scope}.firstName": 1,
-				"{scope}.lastName": 1
+				"scope.firstName": ["scope", "firstName"],
+				"scope.lastName": ["scope", "lastName"]
 			});
 
 			expect(r).to.has.property('source');
@@ -267,7 +252,7 @@ describe("Parser", () => {
 			let r = ParseInterpolation({}, 'Hello #{10 * if(#x > 1, 1, -1)}!');
 
 			expect(r.bindings).to.deep.include({
-				"x": 1
+				".x": [null, "x"]
 			});
 
 			expect(r).to.has.property('source');
@@ -283,7 +268,7 @@ describe("Parser", () => {
 			let r = ParsePropertyRef('varName');
 
 			expect(r.bindings).to.deep.include({
-				"{scope}.varName": 1
+				"scope.varName": ["scope", "varName"]
 			});
 
 			expect(r).to.has.property('source');
@@ -295,7 +280,7 @@ describe("Parser", () => {
 			let r = ParsePropertyRef('varName.subName');
 
 			expect(r.bindings).to.deep.include({
-				"{scope}.varName.subName": 1
+				"scope.varName.subName": ["scope", "varName", "subName"]
 			});
 
 			expect(r).to.has.property('source');
@@ -307,7 +292,7 @@ describe("Parser", () => {
 			let r = ParsePropertyRef('#varName');
 
 			expect(r.bindings).to.deep.include({
-				"varName": 1
+				".varName": [null, "varName"]
 			});
 
 			expect(r).to.has.property('source');
@@ -319,7 +304,7 @@ describe("Parser", () => {
 			let r = ParsePropertyRef('#varName.subName');
 
 			expect(r.bindings).to.deep.include({
-				"varName.subName": 1
+				".varName.subName": [null, "varName", "subName"]
 			});
 
 			expect(r).to.has.property('source');
@@ -331,7 +316,7 @@ describe("Parser", () => {
 			let r = ParsePropertyRef('@varName');
 
 			expect(r.bindings).to.deep.include({
-				"{varName}": 1
+				"varName": ["varName"]
 			});
 
 			expect(r).to.has.property('source');
@@ -343,7 +328,7 @@ describe("Parser", () => {
 			let r = ParsePropertyRef('@varName.subName');
 
 			expect(r.bindings).to.deep.include({
-				"{varName}.subName": 1
+				"varName.subName": ["varName", "subName"]
 			});
 
 			expect(r).to.has.property('source');
